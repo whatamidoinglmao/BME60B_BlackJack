@@ -10,6 +10,10 @@
 % 
 %=========================================================================
 
+% inital clear
+clear
+clc
+
 % define face cards
 ace = 11;
 jack = 10;
@@ -23,5 +27,4 @@ deck = [ace,ace,ace,ace,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6 ...
 
 % shuffles the deck
 shuffle = randperm(52);
-
 
