@@ -1,4 +1,3 @@
-%%=========================================================================
 % 
 %  BME 60B, Fangyuan Ding, MWF 4:00 - 4:50pm
 %  
@@ -31,7 +30,6 @@
 %%
 
 
-
 % inital clear
 clear
 clc
@@ -41,6 +39,9 @@ deck = cardDeck;
 
 % calls shuffle function and shuffles the deck
 deck.d = shuffle(deck);
+
+% initialize players
+%countPlayers();
 
 
 % rough idea for giving inital cards
@@ -78,6 +79,4 @@ function [startingHand, newDeck] = initHands(emptyHand, deck)
     startingHand = emptyHand;
     newDeck = deck.d;
 end
-
-
 
