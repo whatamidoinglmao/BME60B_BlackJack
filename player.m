@@ -1,4 +1,4 @@
-classdef player
+classdef player < handle
     properties % Assigns respective player elements
         playerHand;
         playerValue;
