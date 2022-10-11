@@ -62,6 +62,22 @@ player3 = [];
 %     end
 %     playerHands = player();
 % end
+[player1, deck.d] = initHands(player1, deck);
+[player2, deck.d] = initHands(player2, deck);
+[player3, deck.d] = initHands(player3, deck);
+
+function [startingHand, newDeck] = initHands(emptyHand, deck)
+    % adds one card from the deck to the emptyhand
+    [pickedCard, deck.d] = deck.pickCard();
+    emptyHand(end+1) = pickedCard; 
+
+    % adds the second card from the deck to the emptyhand
+    [pickedCard, deck.d] = deck.pickCard();
+    emptyHand(end+1) = pickedCard;
+    
+    startingHand = emptyHand;
+    newDeck = deck.d;
+end
 
 
 
