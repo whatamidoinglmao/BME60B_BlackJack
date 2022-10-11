@@ -36,24 +36,12 @@
 clear
 clc
 
-% define face cards
-ace = 11;
-jack = 10;
-queen = 10;
-king = 10;
-
-% create "deck" as array with 52 elements
-deck = [ace,ace,ace,ace,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6  ... 
-        7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,jack,jack,jack,jack, ...
-        queen,queen,queen,queen,king,king,king,king];
+% initialize new deck using cardDeck class
+deck = cardDeck;
 
 % calls shuffle function and shuffles the deck
-deck = shuffle(deck);
+deck.d = shuffle(deck);
 
-% rough idea for making players
-% for i = 1:playercount
-%     player"i" = (create player function)
-% end
 
 % rough idea for giving inital cards
 % for i = 1:playercount
