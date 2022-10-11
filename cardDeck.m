@@ -11,7 +11,7 @@ classdef cardDeck
     
     properties
         d                   % this stands for "deck"
-        cards
+        cards               % this stores all the card types
     end
     
     methods
@@ -20,7 +20,6 @@ classdef cardDeck
         function obj = cardDeck()
             
             % makes the array out of strings, so we can differentiate
-            % TODO: add logic to convert a string to a value
 
             obj.cards = ["ace", "1", "2", "3", "4", "5", "6", "7", ...
                      "8", "9", "10", "jack", "queen", "king"];
@@ -33,16 +32,6 @@ classdef cardDeck
                 obj.d(start:(start+3)) = repmat(obj.cards(i), 1, 4);
             end
 
-%             % define face cards
-%             ace = 11;
-%             jack = 10;
-%             queen = 10;
-%             king = 10;
-%
-%             % create "deck" as array with 52 elements
-%             obj.d = [ace,ace,ace,ace,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6 ... 
-%                     7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,jack,jack,jack,jack, ...
-%                     queen,queen,queen,queen,king,king,king,king];
         end
 
 
@@ -65,7 +54,7 @@ classdef cardDeck
             elseif name == obj.cards(1)
                 value = 11;
             
-            %error message, can delete later
+            % error message, can delete later
             else
                 disp("Error: Could not read card");
             end
@@ -80,7 +69,7 @@ classdef cardDeck
             shuffledDeck = obj.d(shuffleIndex);
             clear shuffle
 
-            % to rewrite the cardDeck property in a deck class, use:
+            % to call and shuffle a deck, use:
             % obj.d = shuffle(obj);
 
         end
@@ -93,28 +82,34 @@ classdef cardDeck
             obj.d(1) = [];
             newDeck = obj.d;
 
-            % to rewrite, use:
-            % [pick, obj.d] = pickCard(obj);
-            % the variable pick will store the value of the top card
+            % to call, use:
+            % [name, value, obj.d] = pickCard(obj);
+            % the variable name will store the name of the card
+            % the variable value will store the value of the card
 
         end
 
 
     end
-    %prob wont need this DELETE LATER
+
+    % prob wont need this DELETE LATER (it's not even working...)
     methods (Static)
         function resetDeck = reset()
-            ace = 11;
-            jack = 10;
-            queen = 10;
-            king = 10;
-            resetDeck = [ace,ace,ace,ace,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6 ... 
-                        7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,jack,jack,jack,jack, ...
-                        queen,queen,queen,queen,king,king,king,king];
-            % to rewrite, use:
-            % obj.d = reset()
+            cards = ["ace", "1", "2", "3", "4", "5", "6", "7", ...
+                     "8", "9", "10", "jack", "queen", "king"];
+
+            resetDeck = strings();
+
+            for i = 1:length(cards)
+                start = i + (3*(i-1));
+                resetDeck(start:(start+3)) = repmat(cards(i), 1, 4);
+            end
+
+            % to reset deck:
+            % obj.d = reset();
         end
     end
+    % can delete this whole chunk later
 
 end
 
