@@ -2,7 +2,7 @@ playerNumber = input("how many players? ");
 
 player_index = createPlayers(playerNumber);
 
-for j = 1:size(player_index,1)
+for j = 1:playerNumber
     eval(['player' num2str(j) '= player_index(' ...
             num2str(j) ',:);'])
 end
