@@ -3,6 +3,7 @@ classdef player < handle
         playerHand;
         playerValue;
         playerCard;
+        playerTurn;
     end
     methods
         function obj = player(hand,card) %Initializes player
@@ -10,16 +11,18 @@ classdef player < handle
                 obj.playerHand = hand;
                 obj.playerValue = sum(obj.playerHand);
                 obj.playerCard = card;
+                obj.playerTurn = false
             else % Creates an empty player
                 obj.playerHand = [];
                 obj.playerValue = sum(obj.playerHand);
                 obj.playerCard = 0;
+                obj.playerTurn = false
             end
         end
 
-        function takeCard = Hit(obj) % Adds card to hand
-            takeCard = obj.playerCard;
-            obj.playerHand(end+1) = takeCard;
+        function Hit(obj) % Adds card to hand
+            obj.playerHand(end+1) = obj.playerCard;
+
         end
 
         function aceTrue = Ace(obj) %Boolean for Ace
@@ -34,5 +37,19 @@ classdef player < handle
             end
              
         end
+
+        function Stand(obj)
+            obj.playerTurn = false;
+        end
+
+        function Dealer(obj)
+            while obj.playerTurn
+                obj.Hit();
+                if (obj.playerValue>=17)
+                    obj.Stand()
+                end
+            end
+        end
+
     end
 end
