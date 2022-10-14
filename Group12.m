@@ -21,7 +21,7 @@
 %     
 % 4. create function that takes each player as input and outputs the player's
 %       hand with 2 cards for initializing game (test with player1&2&3 for now) 
-%           - ERIC
+%           
 %%
 
 %% long time todo
