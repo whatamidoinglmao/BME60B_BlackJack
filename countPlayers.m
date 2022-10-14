@@ -10,6 +10,9 @@ for j = 1:playerNumber
     % outputs player1 = [0,0] player2 = [0,0] and so on
     eval(['player' num2str(j) '= player_index(' ...
             num2str(j) ',:);'])
+
+    eval(['player' num2str(j) '= player();']);
+
 end
 
 clear j
