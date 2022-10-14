@@ -1,7 +1,7 @@
 
 
-dealer = [];
-[dealer, deck.d] = initHands(dealer, deck);
+dealer = []; %introducing dealer as variable
+[dealer, deck.d] = initHands(dealer, deck); % function call and dealer takes two random cards from deck
 
 cycle_num = 0;
 
@@ -9,7 +9,7 @@ while sum(dealer) <=21
     cycle_num = cycle_num + 1; % count number of cycles of loop
 
     if sum(dealer) < 18 % additional condition
-        dealer(end+1) = deck.pickCard(); % otherwise, add a new card
+        dealer(end+1) = deck.pickCard(); % add a new card 
     elseif (sum(dealer) > 20) && (sum(dealer) <=21)
         dealer = dealer; % do not take cards and pass
 
