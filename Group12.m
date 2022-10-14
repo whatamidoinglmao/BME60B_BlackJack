@@ -38,45 +38,26 @@ clc
 deck = cardDeck;
 
 % calls shuffle function and shuffles the deck
-deck.d = shuffle(deck);
+deck.d = deck.shuffle();
 
 % initialize players
 %countPlayers();
 
+playerNumber = input("how many players? ");
 
-% rough idea for giving inital cards
-% for i = 1:playercount
-%     player"i" = givePlayerCards(player"i", deck);
-% end
-
-
-% test players
-player1 = [];
-player2 = [];
-player3 = [];
-
-
-% % find player count and init player hands
-% function playerHands = initGame(playerCount)
-%     for i = 1:playerCount
-%         player(:,:,i) = [];
-%     end
-%     playerHands = player();
-% end
-[player1, deck.d] = initHands(player1, deck);
-[player2, deck.d] = initHands(player2, deck);
-[player3, deck.d] = initHands(player3, deck);
-
-function [startingHand, newDeck] = initHands(emptyHand, deck)
-    % adds one card from the deck to the emptyhand
-    [pickedCard, deck.d] = deck.pickCard();
-    emptyHand(end+1) = pickedCard; 
-
-    % adds the second card from the deck to the emptyhand
-    [pickedCard, deck.d] = deck.pickCard();
-    emptyHand(end+1) = pickedCard;
-    
-    startingHand = emptyHand;
-    newDeck = deck.d;
+% initiate all players based on the input
+for i = 1:playerNumber
+    eval(['player' num2str(i) '= player();']);
 end
+clear i;
+
+input("press enter to start game");
+
+% hands out all players 2 cards to start game
+for i = 1:playerNumber
+    eval(['[player' num2str(i) '.playerHand, player' num2str(i) ...
+        '.playerCard, deck.d] = player' num2str(i) '.init(deck);']);
+end
+
+% begin hit/stand phase
 

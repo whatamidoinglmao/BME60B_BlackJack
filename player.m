@@ -1,20 +1,36 @@
 classdef player < handle
     properties % Assigns respective player elements
-        playerHand;
-        playerValue;
-        playerCard;
+        playerHand
+        playerCard
     end
+
+    properties (Dependent)
+        playerValue
+    end
+
     methods
-        function obj = player(hand,card) %Initializes player
-            if nargin == 2 % If there are 2 arguments in the function
-                obj.playerHand = hand;
-                obj.playerValue = sum(obj.playerHand);
-                obj.playerCard = card;
-            else % Creates an empty player
-                obj.playerHand = [];
-                obj.playerValue = sum(obj.playerHand);
-                obj.playerCard = 0;
+        function obj = player() %Initializes player
+
+                obj.playerHand = [0,0];
+                obj.playerCard = strings([1,2]);
+
+        end
+
+        % sums the player hand to get their score
+        function value = get.playerValue(obj)
+            value = sum(obj.playerHand);
+        end
+
+        % initialize player hands
+        function [startHand, startHandNames, newDeck] = init(obj, Deck)
+            for i = 1:2
+                [pick, value, Deck.d] = Deck.pickCard();
+                obj.playerHand(i) = value;
+                obj.playerCard(i) = pick;
             end
+            startHand = obj.playerHand;
+            startHandNames = obj.playerCard;
+            newDeck = Deck.d;
         end
 
         function takeCard = Hit(obj) % Adds card to hand
