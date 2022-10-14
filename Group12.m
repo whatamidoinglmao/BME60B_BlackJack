@@ -34,14 +34,22 @@
 clear
 clc
 
+playerNumber = input("how many players? ");
+
+% initialize empty player array
+playerList = player.empty();
+for i = 1:playerNumber
+    playerList(end+1) = player([]);
+end
+
 % initialize new deck using cardDeck class
 deck = cardDeck;
 
 % calls shuffle function and shuffles the deck
 deck.d = shuffle(deck);
 
-% initialize players
-%countPlayers();
+% initialize players hands
+[playerList, deck.d] = initPlayersHands(playerList, deck);
 
 
 % rough idea for giving inital cards
@@ -51,9 +59,9 @@ deck.d = shuffle(deck);
 
 
 % test players
-player1 = [];
-player2 = [];
-player3 = [];
+% player1 = [];
+% player2 = [];
+% player3 = [];
 
 
 % % find player count and init player hands
@@ -63,9 +71,18 @@ player3 = [];
 %     end
 %     playerHands = player();
 % end
-[player1, deck.d] = initHands(player1, deck);
-[player2, deck.d] = initHands(player2, deck);
-[player3, deck.d] = initHands(player3, deck);
+% [player1, deck.d] = initHands(player1, deck);
+% [player2, deck.d] = initHands(player2, deck);
+% [player3, deck.d] = initHands(player3, deck);
+
+function [newPlayerList, newDeck] = initPlayersHands(playerList, deck)
+    for i = 1:length(playerList)
+        [playerList(i).playerHand, deck.d] = initHands(playerList(i).playerHand, deck);
+    end
+
+    newPlayerList = playerList;
+    newDeck = deck;
+end
 
 function [startingHand, newDeck] = initHands(emptyHand, deck)
     % adds one card from the deck to the emptyhand
@@ -79,4 +96,3 @@ function [startingHand, newDeck] = initHands(emptyHand, deck)
     startingHand = emptyHand;
     newDeck = deck.d;
 end
-
