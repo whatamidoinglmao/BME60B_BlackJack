@@ -44,9 +44,6 @@ deck = cardDeck;
 % calls shuffle function and shuffles the deck
 deck.d = deck.shuffle();
 
-% initialize players hands
-[playerList, deck.d] = initPlayersHands(playerList, deck);
-
 playerNumber = input("how many players? ");
 realPlayer = input("how many real players? ");
 winners = [];
