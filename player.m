@@ -46,9 +46,9 @@ classdef player < handle
 
         function aceTrue = Ace(obj) %Boolean for Ace
             for i = obj.playerHand % Uses a loop to check for 11
-                if i == 11
+                if obj.playerHand(i) == 11
                     aceTrue = true;
-                    i = 1;
+                    obj.playerHand(i) = 1;
                     break
                 else % If no 11 found in loop, no ace
                     aceTrue = false; 
