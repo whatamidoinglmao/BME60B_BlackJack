@@ -34,65 +34,105 @@
 clear
 clc
 
-playerNumber = input("how many players? ");
-
-% initialize empty player array
-playerList = player.empty();
-for i = 1:playerNumber
-    playerList(end+1) = player([]);
-end
+%gameState
+Game = true;
+turns = 1;
 
 % initialize new deck using cardDeck class
 deck = cardDeck;
 
 % calls shuffle function and shuffles the deck
-deck.d = shuffle(deck);
+deck.d = deck.shuffle();
 
 % initialize players hands
 [playerList, deck.d] = initPlayersHands(playerList, deck);
 
+playerNumber = input("how many players? ");
+realPlayer = input("how many real players? ");
+winners = [];
+winnerValue = 0;
 
-% rough idea for giving inital cards
-% for i = 1:playercount
-%     player"i" = givePlayerCards(player"i", deck);
-% end
+% initiate all players (bots) based on the input
+for i = 1:playerNumber
+    eval(['player' num2str(i) '= player(true);']);
+end
 
-
-% test players
-% player1 = [];
-% player2 = [];
-% player3 = [];
-
-
-% % find player count and init player hands
-% function playerHands = initGame(playerCount)
-%     for i = 1:playerCount
-%         player(:,:,i) = [];
-%     end
-%     playerHands = player();
-% end
-% [player1, deck.d] = initHands(player1, deck);
-% [player2, deck.d] = initHands(player2, deck);
-% [player3, deck.d] = initHands(player3, deck);
-
-function [newPlayerList, newDeck] = initPlayersHands(playerList, deck)
-    for i = 1:length(playerList)
-        [playerList(i).playerHand, deck.d] = initHands(playerList(i).playerHand, deck);
+% Reiterates realPlayers into the first players
+if realPlayer<=playerNumber
+    for i = 1:realPlayer
+        eval(['player' num2str(i) '= player(false);']);
     end
+end
+clear i;
 
-    newPlayerList = playerList;
-    newDeck = deck;
+
+
+input("press enter to start game");
+
+% hands out all players 2 cards to start game
+for i = 1:playerNumber
+    eval(['[player' num2str(i) '.playerHand, player' num2str(i) ...
+        '.playerCard, deck.d] = player' num2str(i) '.init(deck);']);
 end
 
-function [startingHand, newDeck] = initHands(emptyHand, deck)
-    % adds one card from the deck to the emptyhand
-    [pickedCard, deck.d] = deck.pickCard();
-    emptyHand(end+1) = pickedCard; 
+% begin hit/stand phase
+while Game
+    fprintf('Turn: %d\n',turns);
 
-    % adds the second card from the deck to the emptyhand
-    [pickedCard, deck.d] = deck.pickCard();
-    emptyHand(end+1) = pickedCard;
-    
-    startingHand = emptyHand;
-    newDeck = deck.d;
+    % Cycle through each player
+    for i=1:playerNumber
+        % Determines if the player can play (no Busts or Stands)
+        if eval(['player' num2str(i) '.canPlay'])
+
+            fprintf("Score %d\n",eval(['player' num2str(i) '.playerValue;']));
+            % Determines player process
+            if eval(['~player' num2str(i) '.dealer'])
+                decision = input("Player "+num2str(i)+": Hit or Stand?\n","s");
+                % Decision to hit
+                if decision == "Hit"
+                    eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
+                end
+                % Decision to stand OR if the playerValue >=21
+                if decision == "Stand" || eval(['player' num2str(i) '.playerValue>=21'])
+                    eval(['player' num2str(i) '.canPlay = false'])
+                end
+                
+            % Determines Dealer process
+            else
+                input("DealerTurn");
+                if eval(['player' num2str(i) '.playerValue<=16'])
+                    eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
+                else
+                    eval(['player' num2str(i) '.canPlay = false'])
+                end
+            end
+        end
+    end
+    % Checking if all players can't play
+    for i=1:playerNumber
+        if eval(['player' num2str(i) '.canPlay'])
+            break;
+        end
+        Game = false;
+    end
+    turns = turns + 1;
 end
+
+% Checking for Win Condition
+for i = 1:playerNumber
+    % Clearing hand to set playerHand to 0, if cards > 21
+    if eval(['player' num2str(i) '.playerValue>21'])
+        eval(['player' num2str(i) '.playerHand=[0,0];'])
+    end
+    % Updating for new high score
+    if eval(['player' num2str(i) '.playerValue>winnerValue'])
+        winners = [];
+        eval(['winnerValue = player' num2str(i) '.playerValue;'])
+        winners(end+1) = i;
+
+    % In case there's a tie
+    elseif eval(['player' num2str(i) '.playerValue>=winnerValue'])
+        winners(end+1) = i;
+    end
+end
+disp(winners)

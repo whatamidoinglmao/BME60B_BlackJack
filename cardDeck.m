@@ -1,13 +1,9 @@
-% todo functions
-% 1. pick a card and delete it from deck (done)
-% 2. import shuffle method (done)
-% 3. reset deck (done)
-% 4. longterm, maybe make array strings to differentiate
-% faces (suits matter less) !!
+% cardDeck
+%   This class is able to create and manage a deck and the cards within.
 
 classdef cardDeck
-    % d -> deck
-    %   This class creates and manages the deck.
+    % To create a new deck, call:
+    % [DECKNAME] = cardDeck();
     
     properties
         d                   % this stands for "deck"
@@ -16,11 +12,11 @@ classdef cardDeck
     
     methods
 
-        %% initialize the deck class object with a deck
+        % initialize the deck class object with a deck
         function obj = cardDeck()
             
-            % makes the array out of strings, so we can differentiate
-
+            % makes the array out of strings, so we can differentiate face
+            % cards
             obj.cards = ["ace", "1", "2", "3", "4", "5", "6", "7", ...
                      "8", "9", "10", "jack", "queen", "king"];
 
@@ -62,7 +58,7 @@ classdef cardDeck
         end
 
 
-        %% takes the deck property and outputs a shuffled one
+        % takes the deck property and outputs a shuffled one
         function shuffledDeck = shuffle(obj)
 
             shuffleIndex = randperm(length(obj.d));
@@ -70,7 +66,7 @@ classdef cardDeck
             clear shuffle
 
             % to call and shuffle a deck, use:
-            % obj.d = shuffle(obj);
+            % obj.d = obj.shuffle();
 
         end
         
@@ -83,9 +79,9 @@ classdef cardDeck
             newDeck = obj.d;
 
             % to call, use:
-            % [name, value, obj.d] = pickCard(obj);
-            % the variable name will store the name of the card
-            % the variable value will store the value of the card
+            % [name, value, obj.d] = obj.pickCard();
+            % the variable [NAME] will store the name of the card
+            % the variable [VALUE] will store the value of the card
 
         end
 
