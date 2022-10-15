@@ -78,6 +78,10 @@ while Game
 
     % Cycle through each player
     for i=1:playerNumber
+        % Checking if deck length >0
+        if length(deck) <=0
+            Game = false;
+        end
         % Determines if the player can play (no Busts or Stands)
         if eval(['player' num2str(i) '.canPlay'])
 
@@ -110,8 +114,12 @@ while Game
         if eval(['player' num2str(i) '.canPlay'])
             break;
         end
-        Game = false;
+        if eval(['~player' num2str(playerNumber) '.canPlay'])
+            Game = false;
+        end
+        
     end
+
     turns = turns + 1;
 end
 
