@@ -34,6 +34,9 @@
 clear
 clc
 
+%gameState
+Game = true;
+turns = 1;
 % initialize new deck using cardDeck class
 deck = cardDeck;
 
@@ -44,12 +47,21 @@ deck.d = deck.shuffle();
 %countPlayers();
 
 playerNumber = input("how many players? ");
-
-% initiate all players based on the input
+realPlayer = input("how many real players? ");
+% initiate all players (bots) based on the input
 for i = 1:playerNumber
-    eval(['player' num2str(i) '= player();']);
+    eval(['player' num2str(i) '= player(true);']);
+end
+
+% Reiterates realPlayers into the first players
+if realPlayer<=playerNumber
+    for i = 1:realPlayer
+        eval(['player' num2str(i) '= player(false);']);
+    end
 end
 clear i;
+
+
 
 input("press enter to start game");
 
@@ -60,4 +72,29 @@ for i = 1:playerNumber
 end
 
 % begin hit/stand phase
+while Game
+    fprintf('Turn: %d\n',turns);
 
+    % Cycle through each player
+    for i=1:playerNumber
+        % Determines if the player can play (no Busts or Stands)
+        if eval(['player' num2str(i) '.canPlay'])
+
+            % Determines dealer process
+            if eval(['~player' num2str(i) '.dealer'])
+                input("PlayerTurn");
+            % Determines player process
+            else
+                input("DealerTurn");
+            end
+        end
+    end
+    % Checking if all players can't play
+    for i=1:playerNumber
+        if eval(['player' num2str(i) '.canPlay'])
+            break;
+        end
+        Game = false;
+    end
+    turns = turns + 1;
+end

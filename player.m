@@ -2,6 +2,8 @@ classdef player < handle
     properties % Assigns respective player elements
         playerHand
         playerCard
+        dealer
+        canPlay
     end
 
     properties (Dependent)
@@ -9,10 +11,12 @@ classdef player < handle
     end
 
     methods
-        function obj = player() %Initializes player
+        function obj = player(dealerStat) %Initializes player
 
                 obj.playerHand = [0,0];
                 obj.playerCard = strings([1,2]);
+                obj.canPlay = true;
+                obj.dealer = dealerStat;
 
         end
 
