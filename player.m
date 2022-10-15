@@ -37,9 +37,11 @@ classdef player < handle
             newDeck = Deck.d;
         end
 
-        function takeCard = Hit(obj) % Adds card to hand
-            takeCard = obj.playerCard;
-            obj.playerHand(end+1) = takeCard;
+        function newDeck = Hit(obj,Deck) % Adds card to hand
+            [pick, value, Deck.d] = Deck.pickCard();
+            obj.playerHand(end+1) = value;
+            obj.playerCard(end+1) = pick;
+            newDeck = Deck.d;
         end
 
         function aceTrue = Ace(obj) %Boolean for Ace

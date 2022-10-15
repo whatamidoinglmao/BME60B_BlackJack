@@ -86,6 +86,7 @@ while Game
             % Determines player process
             else
                 input("DealerTurn");
+                eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
             end
         end
     end
