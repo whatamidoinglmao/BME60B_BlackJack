@@ -21,7 +21,7 @@
 %     
 % 4. create function that takes each player as input and outputs the player's
 %       hand with 2 cards for initializing game (test with player1&2&3 for now) 
-%           - ERIC
+%           
 %%
 
 %% long time todo
@@ -37,14 +37,15 @@ clc
 %gameState
 Game = true;
 turns = 1;
+
 % initialize new deck using cardDeck class
 deck = cardDeck;
 
 % calls shuffle function and shuffles the deck
 deck.d = deck.shuffle();
 
-% initialize players
-%countPlayers();
+% initialize players hands
+[playerList, deck.d] = initPlayersHands(playerList, deck);
 
 playerNumber = input("how many players? ");
 realPlayer = input("how many real players? ");
