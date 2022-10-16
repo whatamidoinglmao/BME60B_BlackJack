@@ -96,6 +96,7 @@ while Game
                 if decision == "Hit"
                     eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
                 end
+                % Determines if bot has Ace in hand
                 if eval(['player' num2str(i) '.playerValue>21']) &&...
                         ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
                     eval(['player' num2str(i) '.Ace();'])
@@ -111,6 +112,8 @@ while Game
                 
                 if eval(['player' num2str(i) '.playerValue<=16'])
                     eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
+
+                    % Determines if bot has Ace in hand
                     if eval(['player' num2str(i) '.playerValue>21']) &&...
                     ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
                         eval(['player' num2str(i) '.Ace();'])
