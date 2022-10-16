@@ -72,8 +72,12 @@ classdef cardDeck
         
         % picks the top card, outputs it, and removes it from the deck
         function [pickedCardName, pickedCardValue, newDeck] = pickCard(obj)
-
-            pickedCardName = obj.d(1);
+            if obj.d == "1"
+                obj.d = "ace";
+            else
+                pickedCardName = obj.d(1);
+            end
+            
             pickedCardValue = obj.evalCard(pickedCardName);
             obj.d(1) = [];
             newDeck = obj.d;

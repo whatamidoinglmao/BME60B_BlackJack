@@ -44,14 +44,12 @@ classdef player < handle
             newDeck = Deck.d;
         end
 
-        function aceTrue = Ace(obj) %Boolean for Ace
-            for i = obj.playerHand % Uses a loop to check for 11
-                if obj.playerHand(i) == 11
-                    aceTrue = true;
-                    obj.playerHand(i) = 1;
+        function Ace(obj) %Boolean for Ace
+            i = 1;
+            for i = 1:obj.playerHand % Uses a loop to check for 11
+                if obj.playerHand(i) == str2double("11")
+                    obj.playerHand(i) = str2double("1");
                     break
-                else % If no 11 found in loop, no ace
-                    aceTrue = false; 
                 end
             end
              
