@@ -126,10 +126,17 @@ while Game
     end
     % Checking if all players can't play
     for i=1:playerNumber
-        if eval(['player' num2str(i) '.canPlay'])
-            break;
+
+        % create a logical array for valid players
+        validPlayers = true(1, playerNumber);
+
+        % sets the logical to false if a player can't play
+        if eval(['~player' num2str(i) '.canPlay'])
+            validPlayers(i) = false;
         end
-        if eval(['~player' num2str(playerNumber) '.canPlay'])
+        
+        % if no valid players, the game ends
+        if ~any(validPlayers)
             Game = false;
         end
         
