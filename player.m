@@ -2,7 +2,7 @@ classdef player < handle
     properties % Assigns respective player elements
         playerHand
         playerCard
-        dealer
+        bot
         canPlay
     end
 
@@ -16,7 +16,7 @@ classdef player < handle
                 obj.playerHand = [0,0];
                 obj.playerCard = strings([1,2]);
                 obj.canPlay = true;
-                obj.dealer = dealerStat;
+                obj.bot = dealerStat;
 
         end
 
