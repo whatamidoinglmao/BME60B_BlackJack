@@ -8,6 +8,7 @@ classdef cardDeck
     properties
         d                   % this stands for "deck"
         cards               % this stores all the card types
+        suits               % stores the suits of cards
     end
     
     methods
@@ -17,8 +18,10 @@ classdef cardDeck
             
             % makes the array out of strings, so we can differentiate face
             % cards
-            obj.cards = ["ace", "1", "2", "3", "4", "5", "6", "7", ...
-                     "8", "9", "10", "jack", "queen", "king"];
+            obj.cards = ["Ace", "1", "2", "3", "4", "5", "6", "7", ...
+                     "8", "9", "10", "Jack", "Queen", "King"];
+            cardSuits = [" of Clubs", " of Diamonds", ...
+                         " of Hearts", " of Spades"];
 
             obj.d = strings();
 
@@ -27,6 +30,9 @@ classdef cardDeck
                 start = i + (3*(i-1));
                 obj.d(start:(start+3)) = repmat(obj.cards(i), 1, 4);
             end
+
+            % creates a deck that matches the suits
+            obj.suits = repmat(cardSuits, 1, length(obj.cards));
 
         end
 
@@ -59,11 +65,12 @@ classdef cardDeck
 
 
         % takes the deck property and outputs a shuffled one
-        function shuffledDeck = shuffle(obj)
+        function [shuffledCards, shuffledSuits] = shuffle(obj)
 
             shuffleIndex = randperm(length(obj.d));
-            shuffledDeck = obj.d(shuffleIndex);
-            clear shuffle
+            shuffledCards = obj.d(shuffleIndex);
+            shuffledSuits = obj.suits(shuffleIndex);
+            
 
             % to call and shuffle a deck, use:
             % obj.d = obj.shuffle();
@@ -79,7 +86,9 @@ classdef cardDeck
             end
             
             pickedCardValue = obj.evalCard(pickedCardName);
+            pickedCardName = pickedCardName + obj.suits(1);
             obj.d(1) = [];
+            obj.suits(1) = [];
             newDeck = obj.d;
 
             % to call, use:
@@ -91,25 +100,6 @@ classdef cardDeck
 
 
     end
-
-    % prob wont need this DELETE LATER (it's not even working...)
-    methods (Static)
-        function resetDeck = reset()
-            cards = ["ace", "1", "2", "3", "4", "5", "6", "7", ...
-                     "8", "9", "10", "jack", "queen", "king"];
-
-            resetDeck = strings();
-
-            for i = 1:length(cards)
-                start = i + (3*(i-1));
-                resetDeck(start:(start+3)) = repmat(cards(i), 1, 4);
-            end
-
-            % to reset deck:
-            % obj.d = reset();
-        end
-    end
-    % can delete this whole chunk later
 
 end
 
