@@ -40,8 +40,31 @@ deck = cardDeck;
 % calls shuffle function and shuffles the deck
 deck.d = deck.shuffle();
 
-playerNumber = input("how many players? ");
-realPlayer = input("how many real players? ");
+while true
+    playerNumber = input(newline + "How many players? (MIN 2, MAX 10): ");
+    playerNumber = round(playerNumber);
+
+    if playerNumber > 1 & playerNumber < 11 %#ok<*AND2> idk this just suppresses some matlab error
+        fprintf('\nPerfect! You chose: %d players\n', playerNumber)
+        break
+    
+    else
+        fprintf('\nNot a valid number of players.\n')
+    end
+end
+
+while true
+    realPlayer = input(newline + "How many real players? Input: ");
+    realPlayer = round(realPlayer);
+
+    if realPlayer > 0 & realPlayer <= playerNumber
+    fprintf('\nPerfect! You chose: %d real player(s)\n', realPlayer)
+    break
+
+    else
+        fprintf('\nNot a valid number of real players.\n')
+    end
+end
 
 % initiate all players (bots) based on the input
 for i = 1:playerNumber
@@ -58,7 +81,7 @@ clear i;
 
 
 
-input("press enter to start game");
+input(newline + "Press enter to start game.");
 
 % hands out all players 2 cards to start game
 for i = 1:playerNumber
@@ -66,21 +89,23 @@ for i = 1:playerNumber
         '.playerCard, deck.d] = player' num2str(i) '.init(deck);']);
 end
 
-% begin hit/stand phase
+% game is finished being setup, begin hit/stand phase
 
 %gameState
 Game = true;
-turns = 1;
+round = 1;
 validPlayers = true(1, playerNumber); % create a logical array for valid players
 
 while Game
-    fprintf('Turn: %d\n',turns);
+    fprintf(['\n====================================\n' ...
+        'Round: %d\n'],round);
 
     % Cycle through each player
     for i=1:playerNumber
-        % Checking if deck length >0
-        if length(deck) <=0
+        % Checking if deck length >0 and ending game if no cards left
+        if isempty(deck.d)
             Game = false;
+            disp(newline + "Error: Ending game - Ran out of cards somehow..." + newline)
         end
         % Determines if the player can play (no Busts or Stands)
         if eval(['player' num2str(i) '.canPlay'])
@@ -88,30 +113,53 @@ while Game
                     ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
                 eval(['player' num2str(i) '.Ace();'])
             end
-            fprintf("Score %d\n",eval(['player' num2str(i) '.playerValue;']));
+            fprintf('\n------------------------------------\nCurrent Player: Player%d - Score: %d\n',i,eval(['player' num2str(i) '.playerValue;']));
             % Determines player process
             if eval(['~player' num2str(i) '.dealer'])
-                decision = input("Player "+num2str(i)+": Hit or Stand?\n","s");
-                % Decision to hit
-                if decision == "Hit"
-                    eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
+
+                while true
+                    % Decision to hit
+                    decision = input("Hit or Stand (H/S)? ","s");
+
+                    if lower(decision) == 'h'
+                        eval(['[deck.d,name,value] = player' num2str(i) '.Hit(deck);'])
+                        fprintf('You hit a %s. You new score is: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
+                        break
+                    % Decision to stand
+                    elseif lower(decision) == 's'
+                        eval(['player' num2str(i) '.canPlay = false;'])
+                        fprintf('You decided to stand. Your final hand is worth: %d\n', eval(['player' num2str(i) '.playerValue;']))
+                        break
+
+                    %error on invalid input
+                    else
+                        disp(newline + "Invalid input." + newline)
+                    end
                 end
-                % Determines if bot has Ace in hand
+
+                % if a player gets a blackjack
+                if eval(['player' num2str(i) '.playerValue==21'])
+                    eval(['player' num2str(i) '.canPlay = false;'])
+                    disp(newline + "nice. its blackjackin' time" + newline)
+                end
+
+                if eval(['player' num2str(i) '.playerValue>21'])
+                    eval(['player' num2str(i) '.canPlay = false;'])
+                    disp(newline + "oops lol u went bust" + newline)
+                end
+                % Determines if player has Ace in hand
                 if eval(['player' num2str(i) '.playerValue>21']) &&...
                         ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
                     eval(['player' num2str(i) '.Ace();'])
                 end
-                % Decision to stand OR if the playerValue >=21
-                if decision == "Stand" || eval(['player' num2str(i) '.playerValue>=21'])
-                    eval(['player' num2str(i) '.canPlay = false'])
-                end
                 
             % Determines Dealer process
             else
-                input("DealerTurn");
+                input("Press enter to make bot move.");
                 
                 if eval(['player' num2str(i) '.playerValue<=16'])
-                    eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
+                    eval(['[deck.d, name, value] = player' num2str(i) '.Hit(deck);'])
+                    fprintf('Bot had decided to hit and got a %s. New score: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
 
                     % Determines if bot has Ace in hand
                     if eval(['player' num2str(i) '.playerValue>21']) &&...
@@ -119,7 +167,8 @@ while Game
                         eval(['player' num2str(i) '.Ace();'])
                     end
                 else
-                    eval(['player' num2str(i) '.canPlay = false'])
+                    eval(['player' num2str(i) '.canPlay = false;'])
+                    disp("Bot has decided to stand/gone bust.")
                 end
             end
         end
@@ -139,7 +188,7 @@ while Game
         
     end
 
-    turns = turns + 1;
+    round = round + 1;
 end
 
 % Checking for Win Condition (the highest score >= 21)
@@ -169,5 +218,7 @@ for i = 1:playerNumber
 end
 
 winners = find(winnerIndex);
-disp(winners)
+winnerText = ['\nGame Complete! Winners:\n' repmat('Player%d ', 1, length(winners)) '\n'];
+fprintf(winnerText, winners);
+fprintf('...with a score of: %d!\n', winnerValue);
 
