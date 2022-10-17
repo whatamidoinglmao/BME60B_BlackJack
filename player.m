@@ -37,9 +37,11 @@ classdef player < handle
             newDeck = Deck.d;
         end
 
-        function newDeck = Hit(obj,Deck) % Adds card to hand
-            [pick, value, Deck.d] = Deck.pickCard();
-            obj.playerHand(end+1) = value;
+        function [newDeck, name, value] = Hit(obj,Deck) % Adds card to hand
+            [pick, number, Deck.d] = Deck.pickCard();
+            name = pick;
+            value = number;
+            obj.playerHand(end+1) = number;
             obj.playerCard(end+1) = pick;
             newDeck = Deck.d;
         end
