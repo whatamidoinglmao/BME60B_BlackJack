@@ -34,10 +34,6 @@
 clear
 clc
 
-%gameState
-Game = true;
-turns = 1;
-
 % initialize new deck using cardDeck class
 deck = cardDeck;
 
@@ -71,6 +67,12 @@ for i = 1:playerNumber
 end
 
 % begin hit/stand phase
+
+%gameState
+Game = true;
+turns = 1;
+validPlayers = true(1, playerNumber); % create a logical array for valid players
+
 while Game
     fprintf('Turn: %d\n',turns);
 
@@ -124,9 +126,6 @@ while Game
     end
     % Checking if all players can't play
     for i=1:playerNumber
-
-        % create a logical array for valid players
-        validPlayers = true(1, playerNumber);
 
         % sets the logical to false if a player can't play
         if eval(['~player' num2str(i) '.canPlay'])
