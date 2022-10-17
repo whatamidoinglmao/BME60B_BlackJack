@@ -84,7 +84,10 @@ while Game
         end
         % Determines if the player can play (no Busts or Stands)
         if eval(['player' num2str(i) '.canPlay'])
-
+            if eval(['player' num2str(i) '.playerValue>21']) &&...
+                    ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
+                eval(['player' num2str(i) '.Ace();'])
+            end
             fprintf("Score %d\n",eval(['player' num2str(i) '.playerValue;']));
             % Determines player process
             if eval(['~player' num2str(i) '.dealer'])
@@ -92,6 +95,11 @@ while Game
                 % Decision to hit
                 if decision == "Hit"
                     eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
+                end
+                % Determines if bot has Ace in hand
+                if eval(['player' num2str(i) '.playerValue>21']) &&...
+                        ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
+                    eval(['player' num2str(i) '.Ace();'])
                 end
                 % Decision to stand OR if the playerValue >=21
                 if decision == "Stand" || eval(['player' num2str(i) '.playerValue>=21'])
@@ -101,8 +109,15 @@ while Game
             % Determines Dealer process
             else
                 input("DealerTurn");
+                
                 if eval(['player' num2str(i) '.playerValue<=16'])
                     eval(['[deck.d] = player' num2str(i) '.Hit(deck);'])
+
+                    % Determines if bot has Ace in hand
+                    if eval(['player' num2str(i) '.playerValue>21']) &&...
+                    ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
+                        eval(['player' num2str(i) '.Ace();'])
+                    end
                 else
                     eval(['player' num2str(i) '.canPlay = false'])
                 end
