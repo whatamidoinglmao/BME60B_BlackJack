@@ -82,20 +82,23 @@ while Game
 
     % Cycle through each player
     for i=1:playerNumber
+
         % Checking if deck length >0 and ending game if no cards left
         if isempty(deck.d)
             Game = false;
             disp(newline + "Error: Ending game - Ran out of cards somehow..." + newline)
         end
+
+        fprintf('\n------------------------------------\nCurrent Player: Player%d', i)
         % Determines if the player can play (no Busts or Stands)
-        if eval(['player' num2str(i) '.canPlay'])
+        while eval(['player' num2str(i) '.canPlay'])
             if eval(['player' num2str(i) '.playerValue>21']) &&...
                     ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
                 eval(['player' num2str(i) '.Ace();'])
             end
-            fprintf('\n------------------------------------\nCurrent Player: Player%d - Score: %d\n',i,eval(['player' num2str(i) '.playerValue;']));
+            fprintf('\nScore: %d\n',eval(['player' num2str(i) '.playerValue;']));
             % Determines player process
-            if eval(['~player' num2str(i) '.dealer'])
+            if eval(['~player' num2str(i) '.bot'])
 
                 while true
                     % take a player decision
