@@ -46,8 +46,6 @@ deck.d = deck.shuffle();
 
 playerNumber = input("how many players? ");
 realPlayer = input("how many real players? ");
-winners = [];
-winnerValue = 0;
 
 % initiate all players (bots) based on the input
 for i = 1:playerNumber
@@ -145,7 +143,9 @@ while Game
     turns = turns + 1;
 end
 
-% Checking for Win Condition
+% Checking for Win Condition (the highest score >= 21)
+winnerValue = 0;
+
 for i = 1:playerNumber
     % Clearing hand to set playerHand to 0, if cards > 21
     if eval(['player' num2str(i) '.playerValue>21'])
@@ -153,13 +153,22 @@ for i = 1:playerNumber
     end
     % Updating for new high score
     if eval(['player' num2str(i) '.playerValue>winnerValue'])
-        winners = [];
         eval(['winnerValue = player' num2str(i) '.playerValue;'])
-        winners(end+1) = i;
-
-    % In case there's a tie
-    elseif eval(['player' num2str(i) '.playerValue>=winnerValue'])
-        winners(end+1) = i;
     end
 end
+
+% crowning and announcing winners
+winnerIndex = false(1,playerNumber);
+
+for i = 1:playerNumber
+
+    % sets spot in winner index to true if the player has winning value
+    if eval(['player' num2str(i) '.playerValue == winnerValue'])
+        winnerIndex(i) = true;
+    end
+
+end
+
+winners = find(winnerIndex);
 disp(winners)
+
