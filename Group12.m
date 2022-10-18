@@ -118,12 +118,12 @@ while Game
                     % decision to hit
                     if lower(decision) == 'h'
                         eval(['[deck.d,deck.suits,name,value] = player' num2str(i) '.Hit(deck);'])
-                        fprintf('You hit a %s. You new score is: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
+                        fprintf('\nYou hit a %s. You new score is: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
                         break
                     % Decision to stand
                     elseif lower(decision) == 's'
                         eval(['player' num2str(i) '.canPlay = false;'])
-                        fprintf('You decided to stand. Your final hand is worth: %d\n', eval(['player' num2str(i) '.playerValue;']))
+                        fprintf('\nYou decided to stand. Your final hand is worth: %d\n', eval(['player' num2str(i) '.playerValue;']))
                         break
 
                     %error on invalid input
@@ -142,7 +142,7 @@ while Game
                 if eval(['player' num2str(i) '.playerValue>21'])
                     if eval(['player' num2str(i) '.aceSaves > 0'])
                         eval(['player' num2str(i) '.playerHand = player' num2str(i) '.Ace();'])
-                        fprintf('your ace turns from an 11 to a 1, saving you. New Score: %d\n', eval(['player' num2str(i) '.playerValue']))
+                        fprintf('\nyour ace turns from an 11 to a 1, saving you. New Score: %d\n', eval(['player' num2str(i) '.playerValue']))
                     else
                         eval(['player' num2str(i) '.canPlay = false;'])
                         disp(newline + "oops lol u went bust" + newline)
@@ -156,21 +156,26 @@ while Game
                 % if the bot has a hand below 17, it will hit
                 if eval(['player' num2str(i) '.playerValue<=16'])
                     eval(['[deck.d, deck.suits, name, value] = player' num2str(i) '.Hit(deck);'])
-                    fprintf('Bot had decided to hit and got a %s. New score: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
+                    fprintf('\nBot had decided to hit and got a %s. New score: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
 
                     % bot bust OR ace save
                     if eval(['player' num2str(i) '.playerValue>21'])
                         if eval(['player' num2str(i) '.aceSaves > 0'])
-                            eval(['player' num2str(i) '. playerHand = player' num2str(i) '.Ace();'])
-                            fprintf('bot got an ace save. lucky, new score: %d', eval(['player' num2str(i) '.playerValue']));
+                            eval(['player' num2str(i) '.playerHand = player' num2str(i) '.Ace();'])
+                            fprintf('\nbot got an ace save. lucky, new score: %d\n', eval(['player' num2str(i) '.playerValue']));
                         else
                             eval(['player' num2str(i) '.canPlay = false;'])
-                            disp("bot went bustie :o")
+                            disp(newline + "bot went bustie :o" + newline)
                         end
+                    end
+                        % if a player gets a blackjack, their turn is done
+                    if eval(['player' num2str(i) '.playerValue==21'])
+                        eval(['player' num2str(i) '.canPlay = false;'])
+                        disp(newline + "bot got a blackjack.." + newline)
                     end
                 else % if not, they will stand (or they went bust)
                     eval(['player' num2str(i) '.canPlay = false;'])
-                    disp("Bot has decided to stand.")
+                    disp(newline + "Bot has decided to stand." + newline)
                 end
             end
         end
