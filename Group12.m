@@ -101,11 +101,12 @@ while Game
             disp(newline + "Error: Ending game - Ran out of cards somehow..." + newline)
         end
 
+        fprintf('\n------------------------------------\nCurrent Player: Player%d', i)
         % Determines if the player can play (no Busts or Stands)
-        if eval(['player' num2str(i) '.canPlay'])
+        while eval(['player' num2str(i) '.canPlay'])
             
             % displays score and current hand
-            fprintf('\n------------------------------------\nCurrent Player: Player%d - Score: %d\n',i,eval(['player' num2str(i) '.playerValue;']));
+            fprintf('\nScore: %d\n',eval(['player' num2str(i) '.playerValue;']));
             eval( ['fprintf([''Current Hand: '' repmat(''%s, '', 1, length(player' num2str(i) '.playerCard)-1) ''%s\n''], player' num2str(i) '.playerCard)'])
             
             % Determines player process
