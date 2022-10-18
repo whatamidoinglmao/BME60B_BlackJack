@@ -78,7 +78,7 @@ classdef cardDeck
         end
         
         % picks the top card, outputs it, and removes it from the deck
-        function [pickedCardName, pickedCardValue, newDeck] = pickCard(obj)
+        function [pickedCardName, pickedCardValue, newDeck, newSuits] = pickCard(obj)
             if obj.d == "1"
                 obj.d = "ace";
             else
@@ -90,6 +90,7 @@ classdef cardDeck
             obj.d(1) = [];
             obj.suits(1) = [];
             newDeck = obj.d;
+            newSuits = obj.suits;
 
             % to call, use:
             % [name, value, obj.d] = obj.pickCard();
