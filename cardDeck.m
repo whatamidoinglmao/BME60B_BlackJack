@@ -20,8 +20,8 @@ classdef cardDeck
             % cards
             obj.cards = ["Ace", "1", "2", "3", "4", "5", "6", "7", ...
                      "8", "9", "10", "Jack", "Queen", "King"];
-            cardSuits = [" of Clubs", " of Diamonds", ...
-                         " of Hearts", " of Spades"];
+            cardSuits = ["♣ of Clubs", "♦ of Diamonds", ...
+                         "♥ of Hearts", "♠ of Spades"];
 
             obj.d = strings();
 
