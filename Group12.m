@@ -141,8 +141,8 @@ while Game
                 % player bust OR ace save
                 if eval(['player' num2str(i) '.playerValue>21'])
                     if eval(['player' num2str(i) '.aceSaves > 0'])
-                        eval(['player' num2str(i) '. playerHand = player' num2str(i) '.Ace();'])
-                        fprintf('your ace turns from an 11 to a 1, saving you. New Score: %d', eval(['player' num2str(i) '.playerValue']))
+                        eval(['player' num2str(i) '.playerHand = player' num2str(i) '.Ace();'])
+                        fprintf('your ace turns from an 11 to a 1, saving you. New Score: %d\n', eval(['player' num2str(i) '.playerValue']))
                     else
                         eval(['player' num2str(i) '.canPlay = false;'])
                         disp(newline + "oops lol u went bust" + newline)
@@ -220,7 +220,13 @@ for i = 1:playerNumber
 end
 
 winners = find(winnerIndex);
-winnerText = ['\nGame Complete! Winners:\n' repmat('Player%d ', 1, length(winners)) '\n'];
-fprintf(winnerText, winners);
-fprintf('...with a score of: %d!\n', winnerValue);
+
+% if there is a winner, then announce them. if everyone bust, say no one.
+if winnerValue ~= 0
+    winnerText = ['\nGame Complete! Winners:\n' repmat('Player%d ', 1, length(winners)) '\n'];
+    fprintf(winnerText, winners);
+    fprintf('...with a score of: %d!\n', winnerValue);
+else
+    disp(newline + "Game Complete! No one won lol...")
+end
 
