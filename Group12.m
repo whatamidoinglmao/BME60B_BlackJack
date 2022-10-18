@@ -221,7 +221,12 @@ for i = 1:playerNumber
 end
 
 winners = find(winnerIndex);
-winnerText = ['\nGame Complete! Winners:\n' repmat('Player%d ', 1, length(winners)) '\n'];
-fprintf(winnerText, winners);
-fprintf('...with a score of: %d!\n', winnerValue);
 
+% if there is a winner, then announce them. if everyone bust, say no one.
+if winnerValue ~= 0
+    winnerText = ['\nGame Complete! Winners:\n' repmat('Player%d ', 1, length(winners)) '\n'];
+    fprintf(winnerText, winners);
+    fprintf('...with a score of: %d!\n', winnerValue);
+else
+    disp(newline + "Game Complete! No one won lol...")
+end
