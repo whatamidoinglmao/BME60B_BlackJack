@@ -13,6 +13,8 @@
 clear
 clc
 
+input(newline+ "Welcome to Blackjack! press enter DO NOT TYPE ANYHING PLEASE")
+
 % initialize new deck using cardDeck class
 deck = cardDeck;
 
@@ -37,7 +39,7 @@ while true
     realPlayer = round(realPlayer);
 
     if realPlayer > 0 & realPlayer <= playerNumber
-    fprintf('\nPerfect! You chose: %d real player(s)\n', realPlayer)
+    fprintf('\nok... You chose: %d real player(s)\n', realPlayer)
     break
 
     else
@@ -74,8 +76,10 @@ disp(newline + "Starting Hands:" + newline)
 for i = 1:playerNumber
     eval( ['fprintf([''player' num2str(i) ': '' repmat(''%s, '', 1, length(player' num2str(i) '.playerCard)-1) ''%s\n''], player' num2str(i) '.playerCard)'])
 
-    % if am to be 100% honest, line 75 is way too complicated but idk how
-    % else to do this so... (elian)
+    % if am to be 100% honest, the line above is way too complicated but 
+    % idk how else to do this? it's evaluating a fprintf statement for each
+    % player that creates a matrix matching the amount of card strings in 
+    % their hand (elian)
 
 end
 
