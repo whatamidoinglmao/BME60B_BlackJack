@@ -58,13 +58,28 @@ if realPlayer<=playerNumber
 end
 clear i;
 
-input(newline + "Press enter to start game.");
+pause(0.5)
+disp(newline + "dealing first hand...")
 
 % hands out all players 2 cards to start game
 for i = 1:playerNumber
     eval(['[player' num2str(i) '.playerHand, player' num2str(i) ...
         '.playerCard, deck.d, deck.suits] = player' num2str(i) '.init(deck);']);
 end
+
+pause(0.5)
+
+% display starting hands
+disp(newline + "Starting Hands:" + newline)
+for i = 1:playerNumber
+    eval( ['fprintf([''player' num2str(i) ': '' repmat(''%s, '', 1, length(player' num2str(i) '.playerCard)-1) ''%s\n''], player' num2str(i) '.playerCard)'])
+
+    % if am to be 100% honest, line 75 is way too complicated but idk how
+    % else to do this so... (elian)
+
+end
+
+input(newline + "Press enter to start game.");
 
 % game is finished being setup, begin hit/stand phase
 
@@ -89,7 +104,9 @@ while Game
         % Determines if the player can play (no Busts or Stands)
         if eval(['player' num2str(i) '.canPlay'])
             
+            % displays score and current hand
             fprintf('\n------------------------------------\nCurrent Player: Player%d - Score: %d\n',i,eval(['player' num2str(i) '.playerValue;']));
+            eval( ['fprintf([''Current Hand: '' repmat(''%s, '', 1, length(player' num2str(i) '.playerCard)-1) ''%s\n''], player' num2str(i) '.playerCard)'])
             
             % Determines player process
             if eval(['~player' num2str(i) '.dealer'])
@@ -145,7 +162,7 @@ while Game
                     if eval(['player' num2str(i) '.playerValue>21'])
                         if eval(['player' num2str(i) '.aceSaves > 0'])
                             eval(['player' num2str(i) '. playerHand = player' num2str(i) '.Ace();'])
-                            disp("bot got an ace save. lucky")
+                            fprintf('bot got an ace save. lucky, new score: %d', eval(['player' num2str(i) '.playerValue']));
                         else
                             eval(['player' num2str(i) '.canPlay = false;'])
                             disp("bot went bustie :o")
