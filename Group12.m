@@ -9,27 +9,6 @@
 % 
 %%=========================================================================
 
-%% todo
-% 1. create function, takes player count as input and outputs x players
-%       with empty hands - TAIR
-%
-% 2. create class that handles gamestate (has methods that updates player
-%       hands and scores, can find winner in the end) - ELIAN
-%
-% 3. create a class that handles player hands (has methods like hitting,
-%       standing, etc.) - KENT
-%     
-% 4. create function that takes each player as input and outputs the player's
-%       hand with 2 cards for initializing game (test with player1&2&3 for now) 
-%           
-%%
-
-%% long time todo
-% 1. differentiate face cards
-% 2. differentiate suits
-%%
-
-
 % inital clear
 clear
 clc
@@ -38,7 +17,7 @@ clc
 deck = cardDeck;
 
 % calls shuffle function and shuffles the deck
-deck.d = deck.shuffle();
+[deck.d, deck.suits] = deck.shuffle();
 
 while true
     playerNumber = input(newline + "How many players? (MIN 2, MAX 10): ");
@@ -79,14 +58,12 @@ if realPlayer<=playerNumber
 end
 clear i;
 
-
-
 input(newline + "Press enter to start game.");
 
 % hands out all players 2 cards to start game
 for i = 1:playerNumber
     eval(['[player' num2str(i) '.playerHand, player' num2str(i) ...
-        '.playerCard, deck.d] = player' num2str(i) '.init(deck);']);
+        '.playerCard, deck.d, deck.suits] = player' num2str(i) '.init(deck);']);
 end
 
 % game is finished being setup, begin hit/stand phase
@@ -102,18 +79,18 @@ while Game
 
     % Cycle through each player
     for i=1:playerNumber
+
         % Checking if deck length >0 and ending game if no cards left
         if isempty(deck.d)
             Game = false;
             disp(newline + "Error: Ending game - Ran out of cards somehow..." + newline)
         end
+
         % Determines if the player can play (no Busts or Stands)
         if eval(['player' num2str(i) '.canPlay'])
-            if eval(['player' num2str(i) '.playerValue>21']) &&...
-                    ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
-                eval(['player' num2str(i) '.Ace();'])
-            end
+            
             fprintf('\n------------------------------------\nCurrent Player: Player%d - Score: %d\n',i,eval(['player' num2str(i) '.playerValue;']));
+            
             % Determines player process
             if eval(['~player' num2str(i) '.dealer'])
 
@@ -122,7 +99,7 @@ while Game
                     decision = input("Hit or Stand (H/S)? ","s");
 
                     if lower(decision) == 'h'
-                        eval(['[deck.d,name,value] = player' num2str(i) '.Hit(deck);'])
+                        eval(['[deck.d,deck.suits,name,value] = player' num2str(i) '.Hit(deck);'])
                         fprintf('You hit a %s. You new score is: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
                         break
                     % Decision to stand
@@ -143,32 +120,38 @@ while Game
                     disp(newline + "nice. its blackjackin' time" + newline)
                 end
 
+                % player bust OR ace save
                 if eval(['player' num2str(i) '.playerValue>21'])
-                    eval(['player' num2str(i) '.canPlay = false;'])
-                    disp(newline + "oops lol u went bust" + newline)
-                end
-                % Determines if player has Ace in hand
-                if eval(['player' num2str(i) '.playerValue>21']) &&...
-                        ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
-                    eval(['player' num2str(i) '.Ace();'])
+                    if eval(['player' num2str(i) '.aceSaves > 0'])
+                        eval(['player' num2str(i) '. playerHand = player' num2str(i) '.Ace();'])
+                        fprintf('your ace turns from an 11 to a 1, saving you. New Score: %d', eval(['player' num2str(i) '.playerValue']))
+                    else
+                        eval(['player' num2str(i) '.canPlay = false;'])
+                        disp(newline + "oops lol u went bust" + newline)
+                    end
                 end
                 
-            % Determines Dealer process
+            % Determines bot moves
             else
                 input("Press enter to make bot move.");
                 
                 if eval(['player' num2str(i) '.playerValue<=16'])
-                    eval(['[deck.d, name, value] = player' num2str(i) '.Hit(deck);'])
+                    eval(['[deck.d, deck.suits, name, value] = player' num2str(i) '.Hit(deck);'])
                     fprintf('Bot had decided to hit and got a %s. New score: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
 
-                    % Determines if bot has Ace in hand
-                    if eval(['player' num2str(i) '.playerValue>21']) &&...
-                    ismember([double(11)],eval(['player' num2str(i) '.playerHand']))
-                        eval(['player' num2str(i) '.Ace();'])
+                    % bot bust OR ace save
+                    if eval(['player' num2str(i) '.playerValue>21'])
+                        if eval(['player' num2str(i) '.aceSaves > 0'])
+                            eval(['player' num2str(i) '. playerHand = player' num2str(i) '.Ace();'])
+                            disp("bot got an ace save. lucky")
+                        else
+                            eval(['player' num2str(i) '.canPlay = false;'])
+                            disp("bot went bustie :o")
+                        end
                     end
                 else
                     eval(['player' num2str(i) '.canPlay = false;'])
-                    disp("Bot has decided to stand/gone bust.")
+                    disp("Bot has decided to stand.")
                 end
             end
         end
