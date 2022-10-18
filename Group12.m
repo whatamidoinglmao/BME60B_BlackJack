@@ -16,10 +16,10 @@
 %==========================================================================
 
 % inital clear
-clear
+clear all
 clc
 
-input(newline+ "Welcome to Blackjack! press enter DO NOT TYPE ANYHING PLEASE")
+input(newline+ "Welcome to Blackjack! press enter to continue :o")
 
 % initialize new deck using cardDeck class
 deck = cardDeck;
