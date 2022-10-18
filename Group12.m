@@ -1,14 +1,14 @@
+%==========================================================================
 % 
 %  BME 60B, Fangyuan Ding, MWF 4:00 - 4:50pm
 %  
 %  Group 12:
-%  [NAMES GO HERE]
+%  Elian L, 
 %  
 %  Last Update:
 %  [DATE]
 % 
-%%=========================================================================
-
+%==========================================================================
 % inital clear
 clear
 clc
@@ -95,9 +95,10 @@ while Game
             if eval(['~player' num2str(i) '.dealer'])
 
                 while true
-                    % Decision to hit
+                    % take a player decision
                     decision = input("Hit or Stand (H/S)? ","s");
 
+                    % decision to hit
                     if lower(decision) == 'h'
                         eval(['[deck.d,deck.suits,name,value] = player' num2str(i) '.Hit(deck);'])
                         fprintf('You hit a %s. You new score is: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
@@ -114,7 +115,7 @@ while Game
                     end
                 end
 
-                % if a player gets a blackjack
+                % if a player gets a blackjack, their turn is done
                 if eval(['player' num2str(i) '.playerValue==21'])
                     eval(['player' num2str(i) '.canPlay = false;'])
                     disp(newline + "nice. its blackjackin' time" + newline)
@@ -135,6 +136,7 @@ while Game
             else
                 input("Press enter to make bot move.");
                 
+                % if the bot has a hand below 17, it will hit
                 if eval(['player' num2str(i) '.playerValue<=16'])
                     eval(['[deck.d, deck.suits, name, value] = player' num2str(i) '.Hit(deck);'])
                     fprintf('Bot had decided to hit and got a %s. New score: %d\n', name, eval(['player' num2str(i) '.playerValue;']))
@@ -149,7 +151,7 @@ while Game
                             disp("bot went bustie :o")
                         end
                     end
-                else
+                else % if not, they will stand (or they went bust)
                     eval(['player' num2str(i) '.canPlay = false;'])
                     disp("Bot has decided to stand.")
                 end
