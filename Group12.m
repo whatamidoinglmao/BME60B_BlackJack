@@ -142,7 +142,7 @@ while Game
                 if eval(['player' num2str(i) '.playerValue>21'])
                     if eval(['player' num2str(i) '.aceSaves > 0'])
                         eval(['player' num2str(i) '. playerHand = player' num2str(i) '.Ace();'])
-                        fprintf('your ace turns from an 11 to a 1, saving you. New Score: %d', eval(['player' num2str(i) '.playerValue']))
+                        fprintf('your ace turns from an 11 to a 1, saving you. New Score: %d\n', eval(['player' num2str(i) '.playerValue']))
                     else
                         eval(['player' num2str(i) '.canPlay = false;'])
                         disp(newline + "oops lol u went bust" + newline)
